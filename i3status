@@ -33,13 +33,13 @@ volume master {
 	mixer = "Master"
 	mixer_idx = 0
 	# termsyn font
-	format = "À %volume "
+	format = " ♪: %volume "
 }
 
 load {
 #	format = " Δ: %1min "
 	# termsyn font
-	format = " Î %1min "
+	format = " Δ: %1min "
 }
 
 cpu_usage {
