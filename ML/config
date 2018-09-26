@@ -37,40 +37,14 @@ font pango:monospace 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec terminus
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 bindsym $mod+e exec DESKTOP_SESSION=kde dolphin
 bindsym $mod+u exec DESKTOP_SESSION=kde systemsettings5
-bindsym $mod+l exec /opt/bin/x86_64-pc-linux-gnu/i3lock \
---insidevercolor='#00000000'   \
---ringvercolor='#ffffffff'     \
-\
---insidewrongcolor='#00000000' \
---ringwrongcolor='#000000bb'   \
-\
---insidecolor='#00000000'      \
---ringcolor='#ffffffcc'        \
---linecolor='#00000000'        \
---separatorcolor='#ffffffcc'   \
-\
---verifcolor='#ffffffff'        \
---wrongcolor='#ffffffff'        \
---timecolor='#ffffffff'        \
---datecolor='#ffffffff'        \
---layoutcolor='#ffffffff'      \
---keyhlcolor='#000000bb'       \
---bshlcolor='#000000bb'        \
-\
---screen 1            \
---blur 5              \
---clock               \
---indicator           \
---timestr="%H:%M:%S"  \
---datestr="%A, %m %Y" \
---keylayout 2         \
+bindsym $mod+l exec --no-startup-id ~/lock.sh
 
 # start dmenu (a program launcher)
 # bindsym $mod+d exec dmenu_run
@@ -267,4 +241,4 @@ bindsym XF86AudioPrev exec playerctl previou
 exec_always --no-startup-id xrandr --output eDP1 --mode 1366x768 --pos 0x1152
 exec_always --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --pos 1366x0 --rotate left
 
-exec_always --no-startup-id feh --bg-fill /home/gabriela/Pictures/wallpapers/*
+exec_always --no-startup-id feh --bg-fill ~/Pictures/wallpapers/*
