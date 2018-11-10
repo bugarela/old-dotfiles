@@ -1,0 +1,3 @@
+[submodule "iPython-Notebook-Theme"]
+	path = iPython-Notebook-Theme
+	url = https://github.com/dunovank/iPython-Notebook-Theme
