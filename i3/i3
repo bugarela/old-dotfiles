@@ -287,10 +287,10 @@ bindsym XF86AudioPrev exec playerctl previou
 exec_always --no-startup-id xrandr --output eDP1 --mode 1366x768 --pos 0x512
 exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --pos 1366x0 --rotate left
 
-bindsym $mod+p exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --pos 1366x0 --rotate left
-bindsym $mod+Shift+p exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --right-of eDP1
-bindsym $mod+mod1+p exec --no-startup-id xrandr --output HDMI1 --off
-bindsym $mod+mod1+Shift+p exec --no-startup-id xrandr --output HDMI1 --mode 1360x850 --right-of eDP1
+bindsym $mod+p exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --pos 1366x0 --rotate left && feh --bg-fill ~/Pictures/wallpapers/*
+bindsym $mod+Shift+p exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --right-of eDP1 && feh --bg-fill ~/Pictures/wallpapers/*
+bindsym $mod+mod1+p exec --no-startup-id xrandr --output HDMI1 --off && feh --bg-fill ~/Pictures/wallpapers/*
+bindsym $mod+mod1+Shift+p exec --no-startup-id xrandr --output HDMI1 --mode 1360x850 --right-of eDP1 --pos 1366x0 && feh --bg-fill ~/Pictures/wallpapers/*
 
 # init
 exec_always --no-startup-id compton --config ~/.config/compton.conf -b
