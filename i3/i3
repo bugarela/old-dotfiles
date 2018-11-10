@@ -12,8 +12,9 @@
 set $mod Mod4
 
 # colors
-set $bg-color 	         #463f4c
-set $inactive-bg-color   #595160
+# old = #463f4c
+set $bg-color 	         #111111
+set $inactive-bg-color   #333333
 set $text-color          #f3f4f5
 set $inactive-text-color #8b8293
 set $urgent-bg-color     #f97f7c
@@ -37,23 +38,28 @@ font pango:monospace 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec tilix
 
 # kill focused window
 bindsym $mod+Shift+q kill
+
+bindsym $mod+e exec DESKTOP_SESSION=kde dolphin
+bindsym $mod+mod1+e exec tilix -e "ranger"
+bindsym $mod+u exec DESKTOP_SESSION=kde systemsettings5
+bindsym $mod+l exec --no-startup-id ~/lock.sh
 
 # start dmenu (a program launcher)
 # bindsym $mod+d exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -nf '#BBBBBB' -nb '$bg-color' -sb '$inactive-bg-color' -sf '#EEEEEE' -fn 'monospace-10' -p 'run:'"
 
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+ccedilla focus right
+bindsym $mod+i focus up
+bindsym $mod+m focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -85,7 +91,7 @@ bindsym $mod+f fullscreen toggle
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+x layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -111,6 +117,16 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
+set $ws11 "11"
+set $ws12 "12"
+set $ws13 "13"
+set $ws14 "14"
+set $ws15 "15"
+set $ws16 "16"
+set $ws17 "17"
+set $ws18 "18"
+set $ws19 "19"
+set $ws20 "20"
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -123,6 +139,16 @@ bindsym $mod+7 workspace $ws7
 bindsym $mod+8 workspace $ws8
 bindsym $mod+9 workspace $ws9
 bindsym $mod+0 workspace $ws10
+bindsym $mod+mod1+1 workspace $ws11
+bindsym $mod+mod1+2 workspace $ws12
+bindsym $mod+mod1+3 workspace $ws13
+bindsym $mod+mod1+4 workspace $ws14
+bindsym $mod+mod1+5 workspace $ws15
+bindsym $mod+mod1+6 workspace $ws16
+bindsym $mod+mod1+7 workspace $ws17
+bindsym $mod+mod1+8 workspace $ws18
+bindsym $mod+mod1+9 workspace $ws19
+bindsym $mod+mod1+0 workspace $ws20
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $ws1
@@ -135,6 +161,16 @@ bindsym $mod+Shift+7 move container to workspace $ws7
 bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
+bindsym $mod+mod1+Shift+1 move container to workspace $ws11
+bindsym $mod+mod1+Shift+2 move container to workspace $ws12
+bindsym $mod+mod1+Shift+3 move container to workspace $ws13
+bindsym $mod+mod1+Shift+4 move container to workspace $ws14
+bindsym $mod+mod1+Shift+5 move container to workspace $ws15
+bindsym $mod+mod1+Shift+6 move container to workspace $ws16
+bindsym $mod+mod1+Shift+7 move container to workspace $ws17
+bindsym $mod+mod1+Shift+8 move container to workspace $ws18
+bindsym $mod+mod1+Shift+9 move container to workspace $ws19
+bindsym $mod+mod1+Shift+0 move container to workspace $ws20
 
 # workspace default monitors
 workspace $ws1 output eDP1
@@ -146,7 +182,20 @@ workspace $ws6 output HDMI1
 workspace $ws7 output eDP1
 workspace $ws8 output HDMI1
 workspace $ws9 output eDP1
-workspace $ws0 output HDMI1
+workspace $ws10 output HDMI1
+workspace $ws11 output eDP1
+workspace $ws12 output HDMI1
+workspace $ws13 output eDP1
+workspace $ws14 output HDMI1
+workspace $ws15 output eDP1
+workspace $ws16 output HDMI1
+workspace $ws17 output eDP1
+workspace $ws18 output HDMI1
+workspace $ws19 output eDP11
+workspace $ws20 output HDMI1
+
+assign [class="^Telegram.*$"] $ws3
+assign [class="^Slack$"] $ws5
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -184,10 +233,10 @@ bindsym $mod+r mode "resize"
 
 # window colors
 #                       border              background         text                 indicator
-client.focused          $bg-color           $bg-color          $text-color          #00ff00
-client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color #00ff00
-client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color #00ff00
-client.urgent $urgent-bg-color $urgent-bg-color $text-color #00ff00
+client.focused          $bg-color           $bg-color          $text-color          $bg-color
+client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color $inactive-bg-color
+client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $inactive-bg-color
+client.urgent           $urgent-bg-color $urgent-bg-color $text-color $urgent-bg-color
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -234,7 +283,28 @@ bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previou
 
-exec_always --no-startup-id xrandr --output HDMI1 --right-of eDP1
-exec_always --no-startup-id xrandr --output HDMI1 --mode 1360x850
+# xrandr
+exec_always --no-startup-id xrandr --output eDP1 --mode 1366x768 --pos 0x512
+exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --pos 1366x0 --rotate left
 
-exec_always --no-startup-id feh --randomize --bg-fill /home/bugs/Pictures/wallpapers/*
+bindsym $mod+p exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --pos 1366x0 --rotate left
+bindsym $mod+Shift+p exec --no-startup-id xrandr --output HDMI1 --mode 1920x1080 --right-of eDP1
+bindsym $mod+mod1+p exec --no-startup-id xrandr --output HDMI1 --off
+bindsym $mod+mod1+Shift+p exec --no-startup-id xrandr --output HDMI1 --mode 1360x850 --right-of eDP1
+
+# init
+exec_always --no-startup-id compton --config ~/.config/compton.conf -b
+exec_always --no-startup-id feh --bg-fill ~/Pictures/wallpapers/*
+
+exec_always --no-startup-id exec snap run slack
+exec_always --no-startup-id exec /opt/telegram/Telegram
+
+######### i3-gaps integration ##########
+
+gaps outer 15
+gaps inner 15
+
+for_window [class="^.*"] border pixel 0
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [title="Preferences$"] floating enable
