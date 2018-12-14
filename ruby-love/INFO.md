@@ -4,7 +4,7 @@ General information in README.md
 
 ## Screenshot
 
-![Screenshot](https://imgur.com/a/gc35Cr4)
+![Screenshot](screenshot.png)
 
 ## VSCode Theme
 
