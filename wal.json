@@ -1,0 +1,27 @@
+{
+    "wallpaper": "/home/gabriela/Pictures/wallpapers/8.jpg",
+    "alpha": "100",
+    "special": {
+        "background": "#0C0B17",
+        "foreground": "#f1eae1",
+        "cursor": "#f1eae1"
+    },
+    "colors": {
+        "color0": "#0C0B17",
+        "color1": "#DF8A76",
+        "color2": "#44689A",
+        "color3": "#B0738E",
+        "color4": "#3EAEE4",
+        "color5": "#BEA7B8",
+        "color6": "#E59EAA",
+        "color7": "#f1eae1",
+        "color8": "#a8a39d",
+        "color9": "#DF8A76",
+        "color10": "#44689A",
+        "color11": "#B0738E",
+        "color12": "#3EAEE4",
+        "color13": "#BEA7B8",
+        "color14": "#E59EAA",
+        "color15": "#f1eae1"
+    }
+}
