@@ -1,8 +1,8 @@
-(deftheme junio
+(deftheme juniogabi
   "Created 2019-09-24.")
 
 (custom-theme-set-faces
- 'junio
+ 'juniogabi
  '(cursor ((t (:background "#DF8A76" :foreground "black"))))
  '(hl-line ((t (:background "#000000"))))
  '(mode-line-inactive ((t (:box nil :foreground "#555555" :background "#000000"))))
@@ -20,6 +20,6 @@
  '(font-lock-type-face ((t (:foreground "#EF5C5F"))))
  '(font-lock-warning-face ((t (:foreground "#EE0000" :background "#BCBCBC" :bold t))))
  '(powerline-active1 ((t (:background "#E6DB74" :foreground "#120312"))))
- '(default ((t (:background "#120312" :foreground "#C5C5B8")))))
+ '(default ((t (:background "#060012" :foreground "#C5C5B8")))))
 
-(provide-theme 'junio)
+(provide-theme 'juniogabi)
