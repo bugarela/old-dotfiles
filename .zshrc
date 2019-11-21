@@ -2,14 +2,19 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH="/home/bugs/.oh-my-zsh"
+  export ZSH="/home/gabriela/.oh-my-zsh"
 
+#GEOMETRY_PROMPT_PLUGINS=(virtualenv exec_time git hg)
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 #ZSH_THEME="robbyrussell"
-ZSH_THEME="rkj-repos"
+#ZSH_THEME="rkj-repos"
+#ZSH_THEME="wedisagree"
+#ZSH_THEME="avit"
+ZSH_THEME="sorin"
+#ZSH_THEME="geometry/geometry"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -67,6 +72,18 @@ plugins=(
   git
   zsh-syntax-highlighting
   zsh-autosuggestions
+  colored-man-pages
+  colorize
+  command-not-found
+  copydir
+  copyfile
+  cp
+  extract
+  web-search
+  emoji-clock
+  debian
+  dircycle
+  wakatime
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -100,4 +117,19 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /home/gabriela/random/magrathea/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/gabriela/random/magrathea/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /home/gabriela/random/magrathea/node_modules/tabtab/.completions/sls.zsh ]] && . /home/gabriela/random/magrathea/node_modules/tabtab/.completions/sls.zshexport PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+
+. $HOME/.asdf/asdf.sh
+
+. $HOME/.asdf/completions/asdf.bash
