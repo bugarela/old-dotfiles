@@ -43,9 +43,9 @@ bindsym $mod+Return exec tilix
 # kill focused window
 bindsym $mod+Shift+q kill
 
-bindsym $mod+e exec DESKTOP_SESSION=kde dolphin
+bindsym $mod+e exec nautilus
 bindsym $mod+mod1+e exec tilix -e "ranger"
-bindsym $mod+u exec DESKTOP_SESSION=kde systemsettings5
+bindsym $mod+u exec pavucontrol
 bindsym $mod+l exec --no-startup-id ~/lock.sh
 
 # start dmenu (a program launcher)
@@ -196,6 +196,7 @@ workspace $ws20 output HDMI1
 
 assign [class="^Telegram.*$"] $ws3
 assign [class="^Slack$"] $ws5
+assign [class="^Emacs$"] $ws8
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -271,9 +272,9 @@ bindsym --release $mod+Print exec scrot -u -e 'mv $f $print_path'
 bindsym --release control+$mod+Print exec scrot -u -e 'mv $f /tmp/ && gimp /tmp/$f'
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 0 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume 1 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume 1 -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle # mute sound
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
@@ -305,10 +306,11 @@ bindsym $mod+mod1+Shift+o exec --no-startup-id xrandr --output HDMI1 --primary -
 # init
 exec_always --no-startup-id compton --config ~/.config/compton.conf -b
 exec_always --no-startup-id feh --bg-fill ~/Pictures/wallpapers/*
+exec --no-startup-id dunst
 
 exec_always --no-startup-id exec slack
-exec_always --no-startup-id exec /opt/telegram/Telegram
-
+exec_always --no-startup-id env QT_IM_MODULE=ibus /opt/Telegram/Telegram --%u 
+exec_always --no-startup-id exec emacs 
 ######### i3-gaps integration ##########
 
 gaps outer 15
