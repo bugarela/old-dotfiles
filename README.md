@@ -6,14 +6,30 @@
 
 ## To use my setups
 
-My current setups are Ruby Love and Cyberpunk. Both folders have the same file structure, and you just need to copy the stuff to the right place. So here we go.
-
 PS: I'm assuming you have i3-gaps, i3stats and tilix (if you want to use my terminal colorscheme) installed - and you probably should look through the i3 file and install the stuff you want to use.
 
-`cd ruby-conf` or `cd cyberpunk`
+## General stuff
 
-`cp i3 ~/.config/i3/config`
-`cp i3status ~/.config/i3status/config`
+```sh
+mv ~/.spacemacs ~/.spacemacs_bckp
+mv ~/.config/compton.conf ~/.config/compton.conf_bckp
+mv ~/.zshrc ~/zshrc_bckp
+
+ls -s $DOTFILES/.spacemacs ~/.spacemacs
+ln -s $DOTFILES/compton.conf ~/.config/compton.conf
+ln -s $DOTFILES/.zshrc ~/.zshrc
+```
+
+## Theme specific stuff
+
+```
+mv ~/.config/i3/config ~/.config/i3/config_bckp
+mv ~/.config/i3status/config ~/.config/i3status/config_bckp
+
+ln -s $DOTFILES/theme-folder/i3 ~/.config/i3/config
+ln -s $DOTFILES/theme-folder/i3status ~/.config/i3status/config
+ln -s $DOTFILES/red-orange-pink/emacs-theme.el ~/.emacs.d/private/gimme-a-nice-name.el
+```
 
 Now press `mod+r` to reload and see everything working since life is beautiful.
 
@@ -23,20 +39,8 @@ If you installed tilix:
 
 And the theme will appear as an option in Profiles > Edit Profile > Color
 
-Now some extra stuff, return to the parent directory
-
-`cd ..`
-
-And get your compton to turn on some nice shadows:
-
-`cp compton.conf ~/.config/compton.conf`
-
 You'll need to reload again, and also make sure you have compton installed.
 
 To get a nice lock screen
 `cp lock.sh i3lock ~/`
 (I keep them in $HOME dir, and the bindings assume they are there, but feel free to move them to a smarter place)
-
-And finally, if you want to install Oh-My-Zsh and use what I use,
-
-`cp .zshrc ~/`
