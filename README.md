@@ -12,12 +12,12 @@ PS: I'm assuming you have i3-gaps, i3stats and tilix (if you want to use my term
 
 ```sh
 mv ~/.spacemacs ~/.spacemacs_bckp
-mv ~/.config/compton.conf ~/.config/compton.conf_bckp
 mv ~/.zshrc ~/zshrc_bckp
+mv ~/.config/dunst/dunstrc ~/.config/dunst/dunstrc_bckp
 
 ls -s $DOTFILES/.spacemacs ~/.spacemacs
-ln -s $DOTFILES/compton.conf ~/.config/compton.conf
 ln -s $DOTFILES/.zshrc ~/.zshrc
+ln -s $DOTFILES/dunstrc ~/.config/dunst/dunstrc
 ```
 
 ## Theme specific stuff
@@ -25,9 +25,11 @@ ln -s $DOTFILES/.zshrc ~/.zshrc
 ```
 mv ~/.config/i3/config ~/.config/i3/config_bckp
 mv ~/.config/i3status/config ~/.config/i3status/config_bckp
+mv ~/.config/compton.conf ~/.config/compton.conf_bckp
 
 ln -s $DOTFILES/theme-folder/i3 ~/.config/i3/config
 ln -s $DOTFILES/theme-folder/i3status ~/.config/i3status/config
+ln -s $DOTFILES/theme-folder/compton.conf ~/.config/compton.conf
 ln -s $DOTFILES/red-orange-pink/emacs-theme.el ~/.emacs.d/private/gimme-a-nice-name.el
 ```
 
