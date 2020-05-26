@@ -22,7 +22,7 @@ ln -s $DOTFILES/dunstrc ~/.config/dunst/dunstrc
 
 ## Theme specific stuff
 
-```
+```sh
 mv ~/.config/i3/config ~/.config/i3/config_bckp
 mv ~/.config/i3status/config ~/.config/i3status/config_bckp
 mv ~/.config/compton.conf ~/.config/compton.conf_bckp
