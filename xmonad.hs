@@ -85,6 +85,7 @@ myModMask = mod4Mask       -- Sets modkey to super/windows key
 
 myTerminal :: String
 myTerminal = "alacritty"   -- Sets default terminal
+-- myTerminal = "emacsclient -c -e '(multi-term)'"
 
 myBrowser :: String
 myBrowser = "vivaldi "               -- Sets qutebrowser as browser for tree select
@@ -111,7 +112,7 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 
 myStartupHook :: X ()
 myStartupHook = do
-          spawnOnce "./home/gabriela/.screenlayout/paradise.sh"
+          spawnOnce "sh /home/gabriela/.screenlayout/paradise.sh"
           -- spawnOnce "xrandr --output DP-0 --off --output DP-1 --mode 1920x1080 --pos 0x538 --rotate normal --output DP-2 --off --output DP-3 --off --output HDMI-0 --primary --mode 1920x1080 --pos 1920x0 --rotate normal --output DP-4 --off --output DP-5 --off"
           spawnOnce "nitrogen --restore &"
           spawnOnce "picom &"
@@ -259,20 +260,20 @@ searchList = [ ("a", archwiki)
 
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
-                , NS "mocp" spawnMocp findMocp manageMocp
+                , NS "spotify" spawnSpotify findSpotify manageSpotify
                 ]
   where
-    spawnTerm  = myTerminal ++ " --name scratchpad"
-    findTerm   = resource =? "scratchpad"
+    spawnTerm  = myTerminal ++ " -t scratch"
+    findTerm   = title =? "scratch"
     manageTerm = customFloating $ W.RationalRect l t w h
                where
                  h = 0.9
                  w = 0.9
                  t = 0.95 -h
                  l = 0.95 -w
-    spawnMocp  = myTerminal ++ " -n mocp 'mocp'"
-    findMocp   = resource =? "mocp"
-    manageMocp = customFloating $ W.RationalRect l t w h
+    spawnSpotify  = "spotify"
+    findSpotify   = className =? "Spotify"
+    manageSpotify = customFloating $ W.RationalRect l t w h
                where
                  h = 0.9
                  w = 0.9
@@ -343,16 +344,35 @@ myShowWNameTheme = def
     , swn_color             = "#FFFFFF"
     }
 
+myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
+myManageHook = composeAll
+     -- using 'doShift ( myWorkspaces !! 7)' sends program to workspace 8!
+     -- I'm doing it this way because otherwise I would have to write out
+     -- the full name of my workspaces.
+     [ className =? "TelegramDesktop"     --> doShift ( myWorkspaces !! 2 )
+     , className =? "Slack"     --> doShift ( myWorkspaces !! 4 )
+     -- , className =? "vlc"     --> doShift ( myWorkspaces !! 7 )
+     , className =? "Gimp"    --> doShift ( myWorkspaces !! 8 )
+     , className =? "Gimp"    --> doFloat
+     , title =? "Oracle VM VirtualBox Manager"     --> doFloat
+     , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 4 )
+     , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
+     ] <+> namedScratchpadManageHook myScratchPads
+
+myLogHook :: X ()
+myLogHook = fadeInactiveLogHook fadeAmount
+    where fadeAmount = 1.0
+
 -- The layout hook
 myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts floats $
                mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
              where
                -- I've commented out the layouts I don't use.
-               myDefaultLayout =     tall
+               myDefaultLayout =     grid
+                                 ||| tall
                                  ||| magnify
                                  ||| noBorders monocle
                                  ||| floats
-                                 ||| grid
                                  ||| noBorders tabs
                                  ||| spirals
                                  ||| threeCol
@@ -366,34 +386,11 @@ xmobarEscape = concatMap doubleLts
 
 myWorkspaces = clickable . (map xmobarEscape)
                -- $ ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-               $ (["www", "vid", "telegram", "dev", "slack", "sys", "mus", "emacs", "misc"] ++ (map snd myExtraWorkspaces))
+               $ (["www", "vid", "telegram", "dev", "slack", "sys", "bg", "emacs", "misc"])
   where
         clickable l = [ "<action=xdotool key super+" ++ show (n) ++ "> " ++ ws ++ " </action>" |
-                      (i,ws) <- zip ([1..9] ++ [0])  l,
+                      (i,ws) <- zip ([1..9])  l,
                       let n = i ]
-
-myExtraWorkspaces = [(xK_0, "clus")] -- list of (key, name)
-
-
-myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
-myManageHook = composeAll
-     -- using 'doShift ( myWorkspaces !! 7)' sends program to workspace 8!
-     -- I'm doing it this way because otherwise I would have to write out
-     -- the full name of my workspaces.
-     [ className =? "Emacs"    --> doShift ( myWorkspaces !! 7 )
-     , className =? "TelegramDesktop"     --> doShift ( myWorkspaces !! 2 )
-     , className =? "Slack"     --> doShift ( myWorkspaces !! 4 )
-     -- , className =? "vlc"     --> doShift ( myWorkspaces !! 7 )
-     , className =? "Gimp"    --> doShift ( myWorkspaces !! 8 )
-     , className =? "Gimp"    --> doFloat
-     , title =? "Oracle VM VirtualBox Manager"     --> doFloat
-     , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 4 )
-     , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
-     ] <+> namedScratchpadManageHook myScratchPads
-
-myLogHook :: X ()
-myLogHook = fadeInactiveLogHook fadeAmount
-    where fadeAmount = 1.0
 
 myKeysP :: [(String, X ())]
 myKeysP =
@@ -457,7 +454,7 @@ myKeysP =
 
     -- Scratchpads
         , ("M-C-<Return>", namedScratchpadAction myScratchPads "terminal")
-        , ("M-C-c", namedScratchpadAction myScratchPads "mocp")
+        , ("M-C-c", namedScratchpadAction myScratchPads "spotify")
 
     -- Apps
         , ("M-u", spawn "pavucontrol")
@@ -487,7 +484,7 @@ myKeysP =
         , ("M-M1-i", spawn (myTerminal ++ " -e irssi"))
         , ("M-M1-j", spawn (myTerminal ++ " -e joplin"))
         , ("M-M1-l", spawn (myTerminal ++ " -e lynx https://distrotube.com"))
-        , ("M-M1-m", spawn (myTerminal ++ " -e mocp"))
+        , ("M-M1-m", spawn (myTerminal ++ " -e spotify"))
         , ("M-M1-n", spawn (myTerminal ++ " -e newsboat"))
         , ("M-M1-p", spawn (myTerminal ++ " -e pianobar"))
         , ("M-M1-r", spawn (myTerminal ++ " -e rtv"))
@@ -508,9 +505,6 @@ myKeysP =
         , ("<XF86Calculator>", runOrRaise "gcalctool" (resource =? "gcalctool"))
         , ("<XF86Eject>", spawn "toggleeject")
         , ("<Print>", spawn "scrotd 0")
-
-        -- , ("M-0", (windows $ W.greedyView "clus"))
-        -- , ("M-S-0", windows $ W.shift "clus")
         ]
         -- Appending search engine prompts to keybindings list.
         -- Look at "search engines" section of this config for values for "k".
@@ -520,13 +514,9 @@ myKeysP =
         -- Look at "xprompt settings" section this of config for values for "k".
         ++ [("M-p " ++ k, f dtXPConfig') | (k,f) <- promptList ]
         ++ [("M-p " ++ k, f dtXPConfig' g) | (k,f,g) <- promptList' ]
-        -- ++ [((m .|. mod4Mask, k), windows $ f i) | (i, k) <- zip myWorkspaces workspacesKeys, (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
         -- The following lines are needed for named scratchpads.
           where nonNSP          = WSIs (return (\ws -> W.tag ws /= "nsp"))
                 nonEmptyNonNSP  = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "nsp"))
-
-myKeys =  [((myModMask, key), (windows $ W.greedyView ws))  | (key, ws) <- myExtraWorkspaces] ++
-  [((myModMask .|. shiftMask, key), (windows $ W.shift ws)) | (key, ws) <- myExtraWorkspaces]
 
 
 main :: IO ()
@@ -567,4 +557,3 @@ main = do
                         , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]
                         }
         } `additionalKeysP` myKeysP
-          `additionalKeys` myKeys

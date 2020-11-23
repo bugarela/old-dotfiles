@@ -1,8 +1,15 @@
+if [[ $(ps --no-header --pid=$PPID --format=cmd) != "fish" ]]
+then
+	exec fish
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
   export ZSH="/home/gabriela/.oh-my-zsh"
+
+# eval "$(starship init zsh)"
 
 #GEOMETRY_PROMPT_PLUGINS=(virtualenv exec_time git hg)
 # Set name of the theme to load --- if set to "random", it will
@@ -13,7 +20,8 @@
 #ZSH_THEME="rkj-repos"
 #ZSH_THEME="wedisagree"
 #ZSH_THEME="avit"
-ZSH_THEME="sorin"
+ZSH_THEME="elessar"
+# ZSH_THEME="sorin"
 #ZSH_THEME="geometry/geometry"
 
 # Set list of themes to pick from when loading at random
@@ -81,9 +89,9 @@ plugins=(
   extract
   web-search
   emoji-clock
-  debian
   dircycle
   wakatime
+  bgnotify
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -127,9 +135,24 @@ source $ZSH/oh-my-zsh.sh
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /home/gabriela/random/magrathea/node_modules/tabtab/.completions/sls.zsh ]] && . /home/gabriela/random/magrathea/node_modules/tabtab/.completions/sls.zshexport PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+# eval "$(rbenv init -)"
+export PATH="/opt/texlive/2020/bin/x86_64-linux:$HOME/go/bin:$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
+
+# OPAM configuration
+. /home/gabriela/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+export FIRESTORE_EMULATOR_HOST=localhost:8081
+export PATH="$PATH:$HOME/.bin"
+
+export DOTFILES="$HOME/Util/dotfiles"
+export GPG_TTY=$(tty)
+
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/gabriela/google-cloud-sdk/path.zsh.inc' ]; then . '/home/gabriela/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/gabriela/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/gabriela/google-cloud-sdk/completion.zsh.inc'; fi

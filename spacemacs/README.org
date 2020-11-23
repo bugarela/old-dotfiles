@@ -16,7 +16,7 @@
           yaml
           graphviz
           haskell
-          (c-c++ :variables c-c++-enable-clang-support t c-c++-enable-google-style t)
+          (c-c++ :variables c-c++-enable-clang-support t c-c++-enable-google-style nil)
           html
           javascript
           (latex :variables
@@ -235,6 +235,7 @@
       (setq flycheck-gcc-language-standard "c++17"
             c-basic-offset 4)
 
+      (remove-hook 'lsp-mode-hook 'lsp-ui-mode)
       (setq-default web-mode-markup-indent-offset 2
                     web-mode-css-indent-offset 2
                     web-mode-code-indent-offset 2
@@ -247,6 +248,7 @@
 
       (custom-set-faces '(flycheck-duplicate ((t (:underline '(:style line)))))
                         '(flycheck-incorrect ((t (:underline '(:style line)))))
+                        '(flycheck-error ((t (:underline '(:style line)))))
                         '(flycheck-warning ((t (:underline '(:style line)))))
                         '(flycheck-info ((t (:background nil :foreground nil :underline '(:style line))))))
     #+end_src

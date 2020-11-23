@@ -10,7 +10,7 @@ values."
      yaml
      graphviz
      haskell
-     (c-c++ :variables c-c++-enable-clang-support t c-c++-enable-google-style t)
+     (c-c++ :variables c-c++-enable-clang-support t c-c++-enable-google-style nil)
      html
      javascript
      (latex :variables
@@ -74,7 +74,7 @@ values."
      wakatime
      spotify
      )
-   dotspacemacs-additional-packages '(org-gcal calfw-org helm-bibtex org-roam org-roam-server org-roam-bibtex org-ref org-noter kaolin-themes org-bullets)
+   dotspacemacs-additional-packages '(org-gcal calfw-org helm-bibtex org-roam org-roam-server org-roam-bibtex org-ref org-noter kaolin-themes org-bullets pinentry)
    dotspacemacs-excluded-packages '(org-superstar)
    dotspacemacs-delete-orphan-packages nil))
 
@@ -94,7 +94,7 @@ values."
    dotspacemacs-startup-lists '((recents . 5)
                                 (projects . 7))
    dotspacemacs-scratch-mode 'text-mode
-   dotspacemacs-themes '(majapahit-light kaolin-ocean)
+   dotspacemacs-themes '(paraiso-dark majapahit-light kaolin-ocean)
    dotspacemacs-mode-line-theme '(all-the-icons
                                   :separator arrow)
    dotspacemacs-colorize-cursor-according-to-state nil
@@ -143,20 +143,23 @@ values."
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
-     It is called immediately after `dotspacemacs/init', before layer configuration
-     executes.
-      This function is mostly useful for variables that need to be set
-     before packages are loaded. If you are unsure, you should try in setting them in
-     `dotspacemacs/user-config' first."
-  )
+        It is called immediately after `dotspacemacs/init', before layer configuration
+        executes.
+         This function is mostly useful for variables that need to be set
+        before packages are loaded. If you are unsure, you should try in setting them in
+        `dotspacemacs/user-config' first."
+
+  (load-file "~/.emacs.d/private/themes/paraiso-dark-theme.el")
+  (load-theme 'paraiso-dark t)
+  (setq spacemacs-theme-comment-bg nil))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
-     This function is called at the very end of Spacemacs initialization after
-     layers configuration.
-     This is the place where most of your configurations should be done. Unless it is
-     explicitly specified that a variable should be set before a package is loaded,
-     you should place you code here."
+          This function is called at the very end of Spacemacs initialization after
+          layers configuration.
+          This is the place where most of your configurations should be done. Unless it is
+          explicitly specified that a variable should be set before a package is loaded,
+          you should place you code here."
 
   (setq user-full-name "Gabriela Moreira Mafra")
   (load-file "~/.emacs.d/private/local/tla-mode/tla-mode.el")
@@ -185,6 +188,7 @@ values."
   (require 'saveplace)
   (setq package-check-signature nil)
 
+  (pinentry-start)
   (server-start)
 
 (require 'tla-mode)
@@ -208,6 +212,7 @@ values."
 (setq flycheck-gcc-language-standard "c++17"
       c-basic-offset 4)
 
+(remove-hook 'lsp-mode-hook 'lsp-ui-mode)
 (setq-default web-mode-markup-indent-offset 2
               web-mode-css-indent-offset 2
               web-mode-code-indent-offset 2
@@ -217,6 +222,12 @@ values."
               js2-strict-missing-semi-warning nil
               js2-missing-semi-one-line-override nil
               typescript-indent-level 2)
+
+(custom-set-faces '(flycheck-duplicate ((t (:underline '(:style line)))))
+                  '(flycheck-incorrect ((t (:underline '(:style line)))))
+                  '(flycheck-error ((t (:underline '(:style line)))))
+                  '(flycheck-warning ((t (:underline '(:style line)))))
+                  '(flycheck-info ((t (:background nil :foreground nil :underline '(:style line))))))
 
 (defun x11-yank-image-at-point-as-image ()
   "Yank the image at point to the X11 clipboard as image/png."
@@ -293,11 +304,23 @@ values."
 
 (ad-activate 'find-file-noselect)
 
+(defun multi-term-foo ()
+  (interactive)
+  "Make a multi-term buffer running foo."
+  (let ((multi-term-program "/bin/bash -c '/usr/sbin/sleep 1'"))
+    (multi-term))
+  )
+
+(defun my/base64-encode-region-no-break ()
+  (interactive)
+  (base64-encode-region (mark) (point) t))
+
 (spacemacs/declare-prefix "o" "own-menu")
 (spacemacs/set-leader-keys "od" 'xref-find-definitions-other-window)
 (spacemacs/set-leader-keys "os" 'projectile-find-implementation-or-test-other-window)
 (spacemacs/set-leader-keys "oy" '(lambda () (interactive) (kill-new (file-relative-name buffer-file-name (projectile-project-root)))))
 (spacemacs/set-leader-keys "on" 'display-line-numbers-mode)
+(spacemacs/set-leader-keys "ob" '(my/base-64-encode-region-no-break))
 
 (spacemacs/declare-prefix "or" "org-roam")
 (spacemacs/set-leader-keys
