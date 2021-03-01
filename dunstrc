@@ -1,5 +1,5 @@
 [global]
-    font = Monospace 8
+    font = Iosevka Fixed SS12 10
 
     # allow a small subset of html markup:
     # <b>bold</b>
@@ -59,7 +59,7 @@
     # right side of the screen.  Y is measured from the top and down respectevly.
     # The width can be negative. In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
-    geometry = "300x5-30+20"
+    geometry = "300x5-810+10"
 
     # The transparency of the window. range: [0; 100]
     # This option will only work if a compositing windowmanager is present (e.g. xcompmgr, compiz, etc..)
@@ -71,7 +71,7 @@
     idle_threshold = 120
 
     # Which monitor should the notifications be displayed on.
-    monitor = 0
+    monitor = 1
 
     # Display notification on focused monitor. Possible modes are:
     # mouse: follow mouse pointer
@@ -83,7 +83,7 @@
     #
     # If this option is set to mouse or keyboard, the monitor option will be
     # ignored.
-    follow = keyboard
+    # follow = keyboard
 
     # should a notification popped up from history be sticky or
     # timeout as if it would normally do.
@@ -125,7 +125,7 @@
 
 [frame]
     width = 0
-    color = "#0C0B17"
+    color = "#DDDDDD"
 
 [shortcuts]
     # shortcuts are specified as [modifier+][modifier+]...key
@@ -148,13 +148,13 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the '#' and following  would be interpreted as a comment.
-    background = "#0f062b"
-    foreground = "#E7CCC1"
+    background = "#777777"
+    foreground = "#000000"
     timeout = 10
 
 [urgency_normal]
-    background = "#0f062b"
-    foreground = "#E7CCC1"
+    background = "#777777"
+    foreground = "#000000"
     timeout = 10
 
 [urgency_critical]

@@ -403,7 +403,8 @@ myKeysP =
         , ("M-<Return>", spawn (myTerminal))
 
     -- Run Prompt
-        , ("M-d", spawn "dmenu_run -i -nf '#BBBBBB' -nb '#0c0c0c' -sb '#2f1e2e' -sf '#EEEEEE' -fn 'monospace-10' -p 'run:'")
+        , ("M-d", spawn "rofi -show drun -font \"Iosevka Fixed SS12 12\"")
+        -- , ("M-d", spawn "dmenu_run -i -nf '#BBBBBB' -nb '#0c0c0c' -sb '#2f1e2e' -sf '#EEEEEE' -fn 'monospace-10' -p 'run:'")
         -- , ("M-d", shellPrompt dtXPConfig)   -- Shell Prompt
 
     -- Windows
@@ -413,6 +414,7 @@ myKeysP =
     -- Floating windows
         -- , ("M-f", sendMessage (T.Toggle "monocle"))       -- Toggles my 'monocle' layout
         , ("M-<Space>", sendMessage (T.Toggle "floats"))       -- Toggles my 'floats' layout
+        , ("M-G", sendMessage (T.Toggle "grid"))       -- Toggles my 'floats' layout
         , ("M-<Delete>", withFocused $ windows . W.sink) -- Push floating window back to tile
         , ("M-S-<Delete>", sinkAll)                      -- Push ALL floating windows to tile
 

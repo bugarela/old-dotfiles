@@ -1,82 +1,86 @@
 (defun dotspacemacs/layers ()
-  "Configuration Layers declaration.
-You should not put any user code in this function besides modifying the variable
-values."
-  (setq-default
-   dotspacemacs-distribution 'spacemacs
-   dotspacemacs-configuration-layer-path '()
-   dotspacemacs-configuration-layers
-   '(
-     yaml
-     graphviz
-     haskell
-     (c-c++ :variables c-c++-enable-clang-support t c-c++-enable-google-style nil)
-     html
-     javascript
-     (latex :variables
-            latex-enable-folding t
-            latex-enable-auto-fill t)
-     lsp
-     (markdown :variables markdown-live-preview-engine 'vmd)
-     (org :variables
-          org-enable-github-support t
-          org-enable-reveal-js-support t
-          org-enable-org-journal-support t
-          org-enable-trello-support t
-          org-projectile-file "~/org/TODOs.org"
-          org-agenda-files '("~/org/"))
-     (python :variables
-             python-backend 'lsp
-             python-sort-imports-on-save t
-             python-fill-docstring-style 'django)
-     racket
-     (ruby :variables
-           ruby-enable-enh-ruby-mode nil
-           ruby-version-manager 'chruby
-           ruby-test-runner 'rspec
-           ruby-backend 'robe)
-     (rust :variables
-           rust-format-on-save t
-           rust-backend 'lsp)
-     scheme
-     shell
-     shell-scripts
-     sql
-     typescript
-     better-defaults
-     colors
-     dap
-     epub
-     finance
-     git
-     github
-     imenu-list
-     (ibuffer :variables ibuffer-group-buffers-by 'projects)
-     pandoc
-     pdf
-     (ranger :variables ranger-show-preview t)
-     restclient
-     (spell-checking :variables
-                     spell-checking-enable-auto-dictionary t
-                     spell-checking-enable-by-default nil)
-     syntax-checking
-     theming
-     themes-megapack
-     (treemacs :variables
-               treemacs-follow-after-init nil
-               treemacs-use-follow-mode nil)
-     typography
-     (version-control :variables
-                      version-control-diff-tool 'git-gutter
-                      version-control-global-margin t
-                      version-control-diff-side 'left)
-     google-calendar
-     wakatime
-     spotify
-     )
-   dotspacemacs-additional-packages '(org-gcal calfw-org helm-bibtex org-roam org-roam-server org-roam-bibtex org-ref org-noter kaolin-themes org-bullets pinentry)
-   dotspacemacs-excluded-packages '(org-superstar)
-   dotspacemacs-delete-orphan-packages nil))
+       "Configuration Layers declaration.
+     You should not put any user code in this function besides modifying the variable
+     values."
+       (setq-default
+        dotspacemacs-distribution 'spacemacs
+        dotspacemacs-configuration-layer-path '()
+        dotspacemacs-configuration-layers
+        '(
+          yaml
+          graphviz
+          haskell
+          elixir
+          (c-c++ :variables c-c++-enable-clang-support t c-c++-enable-google-style nil)
+          html
+          javascript
+          (latex :variables
+                 latex-enable-folding t
+                 latex-enable-auto-fill t)
+          lsp
+          (markdown :variables markdown-live-preview-engine 'vmd)
+          (org :variables
+               org-enable-github-support t
+               org-enable-reveal-js-support t
+               org-enable-org-journal-support t
+               org-enable-trello-support t
+               org-projectile-file "~/org/TODOs.org"
+               org-agenda-files '("~/org/" "~/org/todos/"))
+          (python :variables
+                  python-backend 'lsp
+                  python-sort-imports-on-save t
+                  python-fill-docstring-style 'django)
+          racket
+          (ruby :variables
+                ruby-enable-enh-ruby-mode nil
+                ruby-version-manager 'chruby
+                ruby-test-runner 'rspec
+                ruby-backend 'robe)
+          (rust :variables
+                rust-format-on-save t
+                rust-backend 'lsp)
+          scheme
+          shell
+          shell-scripts
+          sql
+          typescript
+          better-defaults
+          colors
+          dap
+          epub
+          finance
+          git
+          github
+          imenu-list
+          (ibuffer :variables ibuffer-group-buffers-by 'projects)
+          pandoc
+          pdf
+          (ranger :variables ranger-show-preview t)
+          restclient
+          (spell-checking :variables
+                          spell-checking-enable-auto-dictionary t
+                          spell-checking-enable-by-default nil)
+          syntax-checking
+          theming
+          themes-megapack
+          (treemacs :variables
+                    treemacs-follow-after-init nil
+                    treemacs-use-follow-mode nil)
+          typography
+          (version-control :variables
+                           version-control-diff-tool 'git-gutter
+                           version-control-global-margin t
+                           version-control-diff-side 'left)
+          google-calendar
+          wakatime
+          spotify
+          slack
+          )
+        dotspacemacs-additional-packages '(
+org-gcal calfw-org helm-bibtex org-roam org-roam-server org-roam-bibtex org-ref org-noter kaolin-themes org-bullets pinentry polymode
+(scroll-on-jump :location (recipe :fetcher gitlab :repo "ideasman42/emacs-scroll-on-jump")))
+        dotspacemacs-excluded-packages '(org-superstar)
+        dotspacemacs-delete-orphan-packages nil))
 
 (defun dotspacemacs/init ()
   "Initialization function.
@@ -94,8 +98,8 @@ values."
    dotspacemacs-startup-lists '((recents . 5)
                                 (projects . 7))
    dotspacemacs-scratch-mode 'text-mode
-   dotspacemacs-themes '(paraiso-dark majapahit-light kaolin-ocean)
-   dotspacemacs-mode-line-theme '(all-the-icons
+   dotspacemacs-themes '(jazz paraiso-dark majapahit-light kaolin-ocean)
+   dotspacemacs-mode-line-theme '(vim-powerline
                                   :separator arrow)
    dotspacemacs-colorize-cursor-according-to-state nil
    dotspacemacs-default-font '("Iosevka Fixed SS12"
@@ -149,8 +153,8 @@ values."
         before packages are loaded. If you are unsure, you should try in setting them in
         `dotspacemacs/user-config' first."
 
-  (load-file "~/.emacs.d/private/themes/paraiso-dark-theme.el")
-  (load-theme 'paraiso-dark t)
+  ;; (load-file "~/.emacs.d/private/themes/paraiso-dark-theme.el")
+  (load-theme 'jazz t)
   (setq spacemacs-theme-comment-bg nil))
 
 (defun dotspacemacs/user-config ()
@@ -166,7 +170,7 @@ values."
   (load-file "~/.emacs.d/private/local/stackoverflow.el")
   (load-file "~/.emacs.d/private/local/tokens.el")
   (load-file "~/.emacs.d/private/local/literature.el")
-  (add-to-list 'load-path "~/.emacs.d/private")
+  (add-to-list 'load-path "~/.emacs.d/private" "~/.emacs.d/tla-tools")
 
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
   (global-auto-revert-mode t)
@@ -193,6 +197,7 @@ values."
 
 (require 'tla-mode)
 (use-package tla-mode :mode "\.tla$")
+(use-package tla-tools :mode "\.tla$")
 
 (require 'org-tempo)
 (setq org-bullets-bullet-list '("› "))
@@ -314,6 +319,21 @@ values."
 (defun my/base64-encode-region-no-break ()
   (interactive)
   (base64-encode-region (mark) (point) t))
+
+(with-eval-after-load 'evil
+  (scroll-on-jump-advice-add evil-undo)
+  (scroll-on-jump-advice-add evil-redo)
+  (scroll-on-jump-advice-add evil-jump-item)
+  (scroll-on-jump-advice-add evil-jump-forward)
+  (scroll-on-jump-advice-add evil-jump-backward)
+  (scroll-on-jump-advice-add evil-ex-search-next)
+  (scroll-on-jump-advice-add evil-ex-search-previous)
+  (scroll-on-jump-advice-add evil-forward-paragraph)
+  (scroll-on-jump-advice-add evil-backward-paragraph))
+
+(with-eval-after-load 'goto-chg
+  (scroll-on-jump-advice-add goto-last-change)
+  (scroll-on-jump-advice-add goto-last-change-reverse))
 
 (spacemacs/declare-prefix "o" "own-menu")
 (spacemacs/set-leader-keys "od" 'xref-find-definitions-other-window)
