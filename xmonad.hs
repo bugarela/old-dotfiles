@@ -27,7 +27,7 @@ import qualified Data.Map as M
     -- Hooks
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
 import XMonad.Hooks.EwmhDesktops  -- for some fullscreen events, also for xcomposite in obs.
-import XMonad.Hooks.FadeInactive
+-- import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts(..))
 import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat)
 import XMonad.Hooks.ServerMode
@@ -113,20 +113,19 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 myStartupHook :: X ()
 myStartupHook = do
           spawnOnce "sh /home/gabriela/.screenlayout/paradise.sh"
-          -- spawnOnce "xrandr --output DP-0 --off --output DP-1 --mode 1920x1080 --pos 0x538 --rotate normal --output DP-2 --off --output DP-3 --off --output HDMI-0 --primary --mode 1920x1080 --pos 1920x0 --rotate normal --output DP-4 --off --output DP-5 --off"
           spawnOnce "nitrogen --restore &"
-          spawnOnce "picom &"
+          spawnOnce "picom --experimental-backends &"
           spawnOnce "volumeicon &"
-          spawnOnce "trayer --edge bottom --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint 0x0c0c0c  --height 16 &"
+          spawnOnce "trayer --edge bottom --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 0 --transparent true --alpha 0 --tint 0x0c0c0c  --height 16 &"
           -- spawnOnce "/usr/sbin/emacs --daemon &"
           spawnOnce "dunst &"
           spawnOnce "setxkbmap -layout us -variant altgr-intl -option caps:swapescape &"
           setWMName "LG3D"
           spawnOnce "emacs"
           spawnOnce "slack"
-          spawnOnce "telegram-desktop"
           spawnOnce "flameshot"
           spawnOnce "xsetroot -cursor_name left_ptr"
+          spawnOnce "gromit-mpx &"
 
 myColorizer :: Window -> Bool -> X (String, String)
 myColorizer = colorRangeFromClassName
@@ -259,26 +258,27 @@ searchList = [ ("a", archwiki)
              ]
 
 myScratchPads :: [NamedScratchpad]
-myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
-                , NS "spotify" spawnSpotify findSpotify manageSpotify
+myScratchPads = [ NS "terminal" spawnTerm findTerm manageScratch
+                , NS "spotify" spawnSpotify findSpotify manageScratch
+                , NS "telegram" spawnTelegram findTelegram manageScratch
+                , NS "discord" spawnDiscord findDiscord manageScratch
                 ]
   where
+    manageScratch = customFloating $ W.RationalRect l t w h
+           where
+             h = 0.9
+             w = 0.9
+             t = 0.95 -h
+             l = 0.95 -w
     spawnTerm  = myTerminal ++ " -t scratch"
     findTerm   = title =? "scratch"
-    manageTerm = customFloating $ W.RationalRect l t w h
-               where
-                 h = 0.9
-                 w = 0.9
-                 t = 0.95 -h
-                 l = 0.95 -w
     spawnSpotify  = "spotify"
     findSpotify   = className =? "Spotify"
-    manageSpotify = customFloating $ W.RationalRect l t w h
-               where
-                 h = 0.9
-                 w = 0.9
-                 t = 0.95 -h
-                 l = 0.95 -w
+    spawnTelegram  = "telegram-desktop"
+    findTelegram   = className =? "TelegramDesktop"
+    spawnDiscord  = "discord"
+    findDiscord   = className =? "discord"
+
 
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
@@ -363,6 +363,15 @@ myLogHook :: X ()
 myLogHook = fadeInactiveLogHook fadeAmount
     where fadeAmount = 1.0
 
+setTransparentHook :: Event -> X All
+setTransparentHook ConfigureEvent{ev_event_type = createNotify, ev_window = id} = do
+  setOpacity id opacity
+  return (All True) where
+    opacityFloat = 0.9
+    opacity = floor $ fromIntegral (maxBound :: Word32) * opacityFloat
+    setOpacity id op = spawn $ "xprop -id " ++ show id ++ " -f _NET_WM_WINDOW_OPACITY 32c -set _NET_WM_WINDOW_OPACITY " ++ show op
+setTransparentHook _ = return (All True)
+
 -- The layout hook
 myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts floats $
                mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
@@ -386,7 +395,7 @@ xmobarEscape = concatMap doubleLts
 
 myWorkspaces = clickable . (map xmobarEscape)
                -- $ ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-               $ (["www", "vid", "telegram", "dev", "slack", "sys", "bg", "emacs", "misc"])
+               $ (["www", "vid", "fm", "dev", "chat", "sys", "bg", "emacs", "misc"])
   where
         clickable l = [ "<action=xdotool key super+" ++ show (n) ++ "> " ++ ws ++ " </action>" |
                       (i,ws) <- zip ([1..9])  l,
@@ -457,6 +466,8 @@ myKeysP =
     -- Scratchpads
         , ("M-C-<Return>", namedScratchpadAction myScratchPads "terminal")
         , ("M-C-c", namedScratchpadAction myScratchPads "spotify")
+        , ("M-C-t", namedScratchpadAction myScratchPads "telegram")
+        , ("M-C-d", namedScratchpadAction myScratchPads "discord")
 
     -- Apps
         , ("M-u", spawn "pavucontrol")
@@ -538,6 +549,7 @@ main = do
                                <+> serverModeEventHook
                                <+> serverModeEventHookF "XMONAD_PRINT" (io . putStrLn)
                                <+> docksEventHook
+                               <+> setTransapentHook
         , modMask            = myModMask
         , terminal           = myTerminal
         , startupHook        = myStartupHook
