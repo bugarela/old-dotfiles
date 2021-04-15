@@ -76,6 +76,7 @@ import XMonad.Util.EZConfig (additionalKeysP, additionalKeys)
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run (runProcessWithInput, safeSpawn, spawnPipe)
 import XMonad.Util.SpawnOnce
+import XMonad.Actions.Navigation2D
 
 myFont :: String
 myFont = "xft:Roboto Mono:bold:size=9:antialias=true:hinting=true"
@@ -359,19 +360,6 @@ myManageHook = composeAll
      , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
      ] <+> namedScratchpadManageHook myScratchPads
 
-myLogHook :: X ()
-myLogHook = fadeInactiveLogHook fadeAmount
-    where fadeAmount = 1.0
-
-setTransparentHook :: Event -> X All
-setTransparentHook ConfigureEvent{ev_event_type = createNotify, ev_window = id} = do
-  setOpacity id opacity
-  return (All True) where
-    opacityFloat = 0.9
-    opacity = floor $ fromIntegral (maxBound :: Word32) * opacityFloat
-    setOpacity id op = spawn $ "xprop -id " ++ show id ++ " -f _NET_WM_WINDOW_OPACITY 32c -set _NET_WM_WINDOW_OPACITY " ++ show op
-setTransparentHook _ = return (All True)
-
 -- The layout hook
 myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts floats $
                mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
@@ -429,8 +417,10 @@ myKeysP =
 
     -- Windows navigation
         , ("M-m", windows W.focusMaster)     -- Move focus to the master window
-        , ("M-j", windows W.focusDown)       -- Move focus to the next window
-        , ("M-k", windows W.focusUp)         -- Move focus to the prev window
+        , ("M-k", windowGo U False)       -- Move focus to the next window
+        , ("M-j", windowGo D False)       -- Move focus to the next window
+        , ("M-h", windowGo L False)       -- Move focus to the next window
+        , ("M-l", windowGo R False)       -- Move focus to the next window
         --, ("M-S-m", windows W.swapMaster)    -- Swap the focused window and the master window
         , ("M-S-j", windows W.swapDown)      -- Swap focused window with next window
         , ("M-S-k", windows W.swapUp)        -- Swap focused window with prev window
@@ -452,8 +442,8 @@ myKeysP =
         , ("M-S-<KP_Multiply>", increaseLimit)              -- Increase number of windows
         , ("M-S-<KP_Divide>", decreaseLimit)                -- Decrease number of windows
 
-        , ("M-h", sendMessage Shrink)                       -- Shrink horiz window width
-        , ("M-l", sendMessage Expand)                       -- Expand horiz window width
+        -- , ("M-h", sendMessage Shrink)                       -- Shrink horiz window width
+        -- , ("M-l", sendMessage Expand)                       -- Expand horiz window width
         , ("M-C-j", sendMessage MirrorShrink)               -- Shrink vert window width
         , ("M-C-k", sendMessage MirrorExpand)               -- Exoand vert window width
 
@@ -539,7 +529,7 @@ main = do
     xmproc1 <- spawnPipe "xmobar -x 1 /home/gabriela/.config/xmobar/xmobarrc1"
     -- xmproc2 <- spawnPipe "xmobar -x 2 /home/gabriela/.config/xmobar/xmobarrc"
     -- the xmonad, ya know...what the WM is named after!
-    xmonad $ fullscreenSupport $ ewmh def
+    xmonad $ fullscreenSupport $ withNavigation2DConfig def $ ewmh def
         { manageHook = ( isFullscreen --> doFullFloat ) <+> myManageHook <+> manageDocks
         -- Run xmonad commands from command line with "xmonadctl command". Commands include:
         -- shrink, expand, next-layout, default-layout, restart-wm, xterm, kill, refresh, run,
@@ -549,7 +539,6 @@ main = do
                                <+> serverModeEventHook
                                <+> serverModeEventHookF "XMONAD_PRINT" (io . putStrLn)
                                <+> docksEventHook
-                               <+> setTransapentHook
         , modMask            = myModMask
         , terminal           = myTerminal
         , startupHook        = myStartupHook
@@ -558,7 +547,7 @@ main = do
         , borderWidth        = myBorderWidth
         , normalBorderColor  = myNormColor
         , focusedBorderColor = myFocusColor
-        , logHook = workspaceHistoryHook <+> myLogHook <+> dynamicLogWithPP xmobarPP
+        , logHook = workspaceHistoryHook <+> dynamicLogWithPP xmobarPP
                         { ppOutput = \x -> hPutStrLn xmproc0 x  >> hPutStrLn xmproc1 x
                         , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]" -- Current workspace in xmobar
                         , ppVisible = xmobarColor "#98be65" ""                -- Visible but not current workspace
